@@ -10,11 +10,30 @@ import java.util.concurrent.TimeUnit;
 
 public class Test {
     private JPanel panel1;
-    private JLabel board;
     private JButton button1;
     private JLabel dice0;
     private JButton a1Button;
     private JTextField TextField1;
+    private JLabel board11;
+    private JLabel board10;
+    private JLabel board9;
+    private JLabel board8;
+    private JLabel board7;
+    private JLabel board6;
+    private JLabel board12;
+    private JLabel board13;
+    private JLabel board14;
+    private JLabel board15;
+    private JLabel board16;
+    private JLabel board17;
+    private JLabel board18;
+    private JLabel board19;
+    private JLabel board20;
+    private JLabel board1;
+    private JLabel board2;
+    private JLabel board3;
+    private JLabel board4;
+    private JLabel board5;
     private static int cnt = 0;
     Dice dice = new Dice(dice0);
     public Test() {

@@ -26,7 +26,7 @@ public class Dice implements Runnable{
         Random random = new Random();
         int pre = 0;
         int i = -1;
-
+        long cnt = 0;
         while(diceOk){
             do{
                 i = random.nextInt(6) + 1;
@@ -34,10 +34,14 @@ public class Dice implements Runnable{
             //System.out.println(i);
             spinDice(i);
             try {
-                TimeUnit.MILLISECONDS.sleep(60);
+                TimeUnit.MILLISECONDS.sleep(50);
+                cnt++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if(cnt == 1000/50 * 3)
+                System.out.println(3);
+
             pre = i;
             Thread.yield();
         }
