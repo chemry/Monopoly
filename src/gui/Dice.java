@@ -8,10 +8,6 @@ public class Dice implements Runnable{
     private boolean diceOk = false;
     private int num = 0;
     JLabel dice;
-    public boolean getDiceStatus(){
-        return diceOk;
-    }
-    //Dice()
     Dice(JLabel dice){
         this.dice = dice;
     }
@@ -23,13 +19,8 @@ public class Dice implements Runnable{
     }
 
     public void spinDice(int i){
-        String path = "src/dice/";
-        //System.out.println(i);
         dice.setIcon(new ImageIcon("src/dice/" + i + ".jpg"));
-        //System.out.println("something");
-
     }
-
 
     public void run(){
         Random random = new Random();
@@ -51,14 +42,6 @@ public class Dice implements Runnable{
             Thread.yield();
         }
         num = i;
+    }
 
-    }
-    /*
-    dice.setIcon(new ImageIcon("src/dice/" + i + ".jpg"));
-                            try {
-        TimeUnit.MILLISECONDS.sleep(2000);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-    */
 }

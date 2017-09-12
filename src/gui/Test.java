@@ -17,10 +17,6 @@ public class Test {
     private JTextField TextField1;
     private static int cnt = 0;
     Dice dice = new Dice(dice0);
-
-
-
-
     public Test() {
 
         button1.addActionListener(new ActionListener() {
@@ -31,12 +27,6 @@ public class Test {
                     dice.setDiceStatus(true);
                     Thread t = new Thread(dice);
                     t.start();
-                    //board.setVisible(false);
-                    //dice.setDice(dice0);
-                    //dice.run();
-
-                    //board.setIcon(new ImageIcon("src/white-board.png"));
-                    //board.setVisible(true);
                     cnt = 1;
                 } else{
                     cnt = 0;
@@ -48,18 +38,10 @@ public class Test {
                         e1.printStackTrace();
                     }
                     TextField1.setText(String.valueOf(dice.getNum()));
-                    //dice.setDice(false);
-                    //board.setVisible(true);
-                    //board.setIcon(new ImageIcon("src/monopoly-board.png"));
                 }
             }
         });
     }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test");
         frame.setContentPane(new Test().panel1);
