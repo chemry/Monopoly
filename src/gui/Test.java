@@ -34,10 +34,15 @@ public class Test {
     private JLabel board3;
     private JLabel board4;
     private JLabel board5;
+    private JLabel counter;
+    private JComboBox comboBox1;
+    private JLabel board0;
+    private JPanel field1;
+    private JButton button2;
     private static int cnt = 0;
     Dice dice = new Dice(dice0);
     public Test() {
-
+        counter.setText("Auto stop in:\n" + 5);
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -50,15 +55,18 @@ public class Test {
                 } else{
                     cnt = 0;
                     dice.setDiceStatus(false);
+                    //panel1.setVisible(false);
+                    field1.setVisible(false);
                     //TextField1.setText("reading value");
                     try {
                         TimeUnit.MILLISECONDS.sleep(100);
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
-                    TextField1.setText(String.valueOf(dice.getNum()));
+                    TextField1.setText("    "+String.valueOf(dice.getNum()));
                 }
             }
+
         });
     }
     public static void main(String[] args) {
