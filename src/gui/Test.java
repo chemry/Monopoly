@@ -8,64 +8,66 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.concurrent.TimeUnit;
 
+
 public class Test {
     private JPanel panel1;
     private JButton button1;
     private JLabel dice0;
     private JButton a1Button;
     private JTextField TextField1;
-    private JLabel board11;
-    private JLabel board10;
-    private JLabel board9;
-    private JLabel board8;
-    private JLabel board7;
-    private JLabel board6;
-    private JLabel board12;
-    private JLabel board13;
-    private JLabel board14;
-    private JLabel board15;
-    private JLabel board16;
-    private JLabel board17;
-    private JLabel board18;
-    private JLabel board19;
-    private JLabel board20;
     private JLabel board1;
-    private JLabel board2;
-    private JLabel board3;
-    private JLabel board4;
-    private JLabel board5;
     private JLabel counter;
     private JLabel board0;
     private JPanel field1;
-    private JButton button2;
+    private JButton startButton;
+    private JLabel dice1;
     private static int cnt = 0;
-    Dice dice = new Dice(dice0);
+    Dice dice = new Dice(dice0, dice1, counter, TextField1);
+
+    private boolean field1Vis = false;
     public Test() {
         counter.setText("Auto stop in:\n" + 5);
+//        board0.setVisible(false);
+//        board1.setVisible(false);
+
+        field1.setVisible(false);
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
+                if(dice.getForceStatus()){
+                    dice.setForceStatus(false);
+                    cnt = 0;
+                }
                 if(cnt == 0) {
                     //TextField1.setText(String.valueOf(dice.getNum()));
+                    cnt = 1;
                     dice.setDiceStatus(true);
                     Thread t = new Thread(dice);
                     t.start();
-                    cnt = 1;
+
                 } else{
                     cnt = 0;
                     dice.setDiceStatus(false);
-                    //panel1.setVisible(false);
-                    //field1.setVisible(false);
-                    //TextField1.setText("reading value");
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(100);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    TextField1.setText("   "+String.valueOf(dice.getNum()));
                 }
             }
+        });
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(startButton.getText() == "Start!"){
+                    System.out.println(panel1.getSize());
+                    System.out.print("good");
+                    if(field1Vis == false) {
 
+                        field1.setVisible(true);
+                        field1Vis = true;
+                    } else {
+                        field1.setVisible(false);
+                        field1Vis = false;
+                    }
+                }
+
+            }
         });
     }
     public static void main(String[] args) {
@@ -74,6 +76,14 @@ public class Test {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        ImageIcon img = new ImageIcon("src/monopoly-board.png");
+        JLabel imgLabel = new JLabel(img);
+        frame.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));
+        imgLabel.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
+        Container cp = frame.getContentPane();
+        //cp.setLayout(new BorderLayout());
+        JButton but = new JButton();
+        ((JPanel)cp).setOpaque(false);
     }
 
 }
