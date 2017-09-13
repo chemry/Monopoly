@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
 
@@ -21,15 +22,37 @@ public class Test {
     private JPanel field1;
     private JButton startButton;
     private JLabel dice1;
+    private JPanel paneltest;
+    private JLabel player113;
+    public JLabel player111;
+    private JLabel player112;
+    private JLabel player115;
+    private JLabel player114;
+    private JLabel player6;
+    private JLabel player126;
+    private JLabel player125;
+    private JLabel player124;
+    private JLabel player123;
+    private JLabel player122;
+    private JLabel player121;
+    private JLabel player136;
+    private JLabel player135;
+    private JLabel player134;
+    private JLabel player133;
+    private JLabel player132;
+    private JLabel player131;
     private static int cnt = 0;
     Dice dice = new Dice(dice0, dice1, counter, TextField1);
 
+
+
     private boolean field1Vis = false;
     public Test() {
+        trying();
         counter.setText("Auto stop in:\n" + 5);
 //        board0.setVisible(false);
 //        board1.setVisible(false);
-
+        paneltest.setOpaque(false);
         field1.setVisible(false);
         button1.addActionListener(new ActionListener() {
             @Override
@@ -70,6 +93,21 @@ public class Test {
             }
         });
     }
+
+    public void trying(){
+        /*try {
+            Field temp = this.getClass().getDeclaredField("player112");
+
+            System.out.println("Public field found: " + temp.toString());
+
+        } catch (Throwable e) {
+            System.out.println(e);
+        }*/
+        for(Field fields : this.getClass().getDeclaredFields())
+            System.out.println(fields);
+    }
+
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test");
         frame.setContentPane(new Test().panel1);
@@ -82,8 +120,11 @@ public class Test {
         imgLabel.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
         Container cp = frame.getContentPane();
         //cp.setLayout(new BorderLayout());
+        System.out.println(img.getIconHeight() + " " +img.getIconWidth());
+
         JButton but = new JButton();
         ((JPanel)cp).setOpaque(false);
+
     }
 
 }
