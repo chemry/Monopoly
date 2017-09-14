@@ -49,6 +49,16 @@ public class Test {
     private boolean field1Vis = false;
     public Test() {
         trying();
+        try {
+            Field temp = this.getClass().getDeclaredField("player111");
+            temp.setAccessible(true);
+            JLabel tempLabel;
+            tempLabel = (JLabel) temp.get(this);
+            tempLabel.setVisible(false);
+        } catch (Throwable e) {
+            System.out.println(e);
+        }
+
         counter.setText("Auto stop in:\n" + 5);
 //        board0.setVisible(false);
 //        board1.setVisible(false);
