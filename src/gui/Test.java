@@ -1,6 +1,7 @@
 package gui;
 // hello trying pull
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -149,6 +150,7 @@ public class Test {
     private JButton button02;
     private JButton button03;
     private JButton button4;
+    private JTable table1;
     private JButton testButton;
     private static int cnt = 0;
     Dice dice = new Dice(dice0, dice1, counter, TextField1);
@@ -158,6 +160,12 @@ public class Test {
     private boolean field1Vis = false;
     public Test() {
         //trying();
+        DefaultTableModel model = (DefaultTableModel) table1.getModel();
+        model.addColumn("A name", new Object[] {"Column1", "Column2"});
+        model.addColumn("Another name", new Object[] {"row1", "row2"});
+        //table1.addColumn();
+        model.addRow(new Object[]{"well", "something"});
+        model.setValueAt("reset", 1, 1);
         try {
             for(int i = 1; i <= 20; i++) {
                 for(int j = 1; j <= 6; j++) {
