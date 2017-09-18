@@ -1,4 +1,4 @@
-package gui;
+package other;
 import javax.swing.*;
 import java.util.concurrent.*;
 public class SubmitSwingProgram extends JFrame{

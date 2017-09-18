@@ -1,9 +1,7 @@
-package gui;
+package other;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import static gui.SwingConsole.*;
 
 public class TextArea extends JFrame{
     private JButton
@@ -30,7 +28,7 @@ public class TextArea extends JFrame{
         add(b2);
     }
     public static void main(String[] args){
-        run(new TextArea(), 800, 600);
+        SwingConsole.run(new TextArea(), 800, 600);
     }
 
 }

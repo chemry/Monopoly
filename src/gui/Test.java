@@ -157,6 +157,7 @@ public class Test {
     Map<String, JLabel> labelMap = new HashMap<String, JLabel>();
 
 
+
     private boolean field1Vis = false;
     public Test() {
         //trying();
@@ -233,26 +234,30 @@ public class Test {
 
             }
         });
-
-        /*testButton.addActionListener(new ActionListener() {
+        button01.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //testing();
-                labelMap.get("player123").setVisible(false);
 
             }
-        });*/
+        });
+
+        button02.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        button03.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
     }
 
     public void testing(){
-        /*try {
-            Field temp = this.getClass().getDeclaredField("player112");
-
-            System.out.println("Public field found: " + temp.toString());
-
-        } catch (Throwable e) {
-            System.out.println(e);
-        }*/
         try {
             for(int i = 1; i <= 20; i++) {
                 for(int j = 1; j <= 6; j++) {

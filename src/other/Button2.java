@@ -1,9 +1,7 @@
-package gui;
+package other;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import static gui.SwingConsole.*;
 
 public class Button2 extends JFrame{
     private JButton
@@ -42,6 +40,6 @@ public class Button2 extends JFrame{
         add(txt);
     }
     public static void main(String[] args){
-        run(new Button2(), 800, 600);
+        SwingConsole.run(new Button2(), 800, 600);
     }
 }
