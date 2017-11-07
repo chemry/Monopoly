@@ -1,0 +1,16 @@
+if new game
+	change: single player, multiplayer, return
+		if single player
+			buy, sell, finish
+		if multiplayer
+			choose player number
+
+
+
+
+
+class: Player
+class: AIPlayer
+class: UserPlayer
+class: Game
+class: Board
