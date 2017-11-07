@@ -1,4 +1,4 @@
-package gui;
+package other;
 import javax.swing.*;
 
 public class SwingConsole {
