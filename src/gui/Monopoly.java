@@ -160,7 +160,6 @@ public class Monopoly {
 
     private boolean field1Vis = false;
     public Monopoly() {
-        //trying();
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         model.addColumn("A name", new Object[] {"Column1", "Column2"});
         model.addColumn("Another name", new Object[] {"row1", "row2"});
