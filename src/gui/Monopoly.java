@@ -10,10 +10,11 @@ import java.awt.event.FocusEvent;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
-public class Test {
+public class Monopoly {
     private JPanel panel1;
     private JButton button1;
     private JLabel dice0;
@@ -157,9 +158,8 @@ public class Test {
     Map<String, JLabel> labelMap = new HashMap<String, JLabel>();
 
 
-
     private boolean field1Vis = false;
-    public Test() {
+    public Monopoly() {
         //trying();
         DefaultTableModel model = (DefaultTableModel) table1.getModel();
         model.addColumn("A name", new Object[] {"Column1", "Column2"});
@@ -167,6 +167,7 @@ public class Test {
         //table1.addColumn();
         model.addRow(new Object[]{"well", "something"});
         model.setValueAt("reset", 1, 1);
+        table1.setVisible(true);
         try {
             for(int i = 1; i <= 20; i++) {
                 for(int j = 1; j <= 6; j++) {
@@ -177,13 +178,6 @@ public class Test {
                     tempLabel = (JLabel) temp.get(this);
                     //tempLabel.setVisible(false);
                     labelMap.put(name, tempLabel);
-                    /*try {
-                        TimeUnit.MILLISECONDS.sleep(10);
-                        cnt++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
-
                 }
             }
 
@@ -196,65 +190,38 @@ public class Test {
 //        board1.setVisible(false);
         paneltest.setOpaque(false);
         field1.setVisible(false);
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(dice.getForceStatus()){
-                    dice.setForceStatus(false);
-                    cnt = 0;
+        button1.addActionListener(e -> {
+            if(dice.getForceStatus()){
+                dice.setForceStatus(false);
+                cnt = 0;
+            }
+            if(cnt == 0) {
+                //TextField1.setText(String.valueOf(dice.getNum()));
+                cnt = 1;
+                dice.setDiceStatus(true);
+                Thread t = new Thread(dice);
+                t.start();
+
+            } else{
+                cnt = 0;
+                dice.setDiceStatus(false);
+            }
+        });
+        startButton.addActionListener(e -> {
+            if(Objects.equals(startButton.getText(), "Start!")){
+                System.out.println(field1.getSize());
+                System.out.print("good");
+                if(!field1Vis) {
+
+                    field1.setVisible(true);
+                    field1Vis = true;
+                } else {
+                    field1.setVisible(false);
+                    field1Vis = false;
                 }
-                if(cnt == 0) {
-                    //TextField1.setText(String.valueOf(dice.getNum()));
-                    cnt = 1;
-                    dice.setDiceStatus(true);
-                    Thread t = new Thread(dice);
-                    t.start();
-
-                } else{
-                    cnt = 0;
-                    dice.setDiceStatus(false);
-                }
             }
+
         });
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(startButton.getText() == "Start!"){
-                    System.out.println(field1.getSize());
-                    System.out.print("good");
-                    if(field1Vis == false) {
-
-                        field1.setVisible(true);
-                        field1Vis = true;
-                    } else {
-                        field1.setVisible(false);
-                        field1Vis = false;
-                    }
-                }
-
-            }
-        });
-        button01.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        button02.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        button03.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
     }
 
     public void testing(){
@@ -266,13 +233,6 @@ public class Test {
                     JLabel tempLabel;
                     tempLabel = (JLabel) temp.get(this);
                     tempLabel.setVisible(false);
-                    /*try {
-                        TimeUnit.MILLISECONDS.sleep(10);
-                        cnt++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
-
                 }
             }
 
@@ -285,9 +245,9 @@ public class Test {
 
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Test");
-        frame.setContentPane(new Test().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame frame = new JFrame("Changed");
+        frame.setContentPane(new Monopoly().panel1);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         ImageIcon img = new ImageIcon("src/monopoly-board.png");
@@ -301,7 +261,4 @@ public class Test {
 
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }
