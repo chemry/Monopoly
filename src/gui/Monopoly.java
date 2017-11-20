@@ -3,15 +3,10 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 
 public class Monopoly {
@@ -153,9 +148,9 @@ public class Monopoly {
     private JButton button4;
     private JTable table1;
     private JButton testButton;
-    private static int cnt = 0;
-    Dice dice = new Dice(dice0, dice1, counter, TextField1);
-    Map<String, JLabel> labelMap = new HashMap<String, JLabel>();
+    private int cnt = 0;
+    private Dice dice = new Dice(dice0, dice1, counter, TextField1);
+    private Map<String, JLabel> labelMap = new HashMap<String, JLabel>();
 
 
     private boolean field1Vis = false;
@@ -245,7 +240,7 @@ public class Monopoly {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Changed");
-        frame.setContentPane(new Monopoly().panel1);
+        frame.setContentPane(new Monopoly().getPanel1());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -260,4 +255,11 @@ public class Monopoly {
 
     }
 
+    public JPanel getPanel1() {
+        return panel1;
+    }
+
+    public void setPanel1(JPanel panel1) {
+        this.panel1 = panel1;
+    }
 }

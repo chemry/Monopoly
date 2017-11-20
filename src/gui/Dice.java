@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * displays dices on the board
+ */
 public class Dice implements Runnable{
     private boolean diceOk = false;
     private boolean forceStop = false;
@@ -17,12 +20,25 @@ public class Dice implements Runnable{
         this.text1 = text1;
         this.counter = counter;
     }
+
+    /**
+     * diceOk be whether the dice is stopped
+     * @param diceOk set the status to diceOk which made the dice stop or keep running
+     */
     public void setDiceStatus(boolean diceOk){
         this.diceOk = diceOk;
     }
+
+    /**
+     * @return the final value of the dice
+     */
     public int getNum(){
         return num;
     }
+
+    /**
+     * @return
+     */
     public boolean getForceStatus(){return forceStop;}
     public void setForceStatus(boolean forceStop){this.forceStop = forceStop;};
     //public boolean getStatus
