@@ -1,6 +1,6 @@
 abstract public class Square {
     private String name;
-
+    private static final int SQUARE_NUM = 20;
     public Square(String name){
         this.name = name;
     }
@@ -9,6 +9,6 @@ abstract public class Square {
     public String toString(){
         return name;
     }
+    public abstract void action(Gamers gamer);
 
-    public abstract void action(Gamers gamer, Game game);
 }

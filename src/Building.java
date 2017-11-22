@@ -22,44 +22,53 @@ public class Building extends Square {
     }
 
     @Override
-    public void action(Gamers gamer, Game game) {
+    public void action(Gamers gamer) {
         if(gamer instanceof AiPlayer){
             SecureRandom rand = new SecureRandom();
             if(!isOccupied) {
                 if (rand.nextBoolean() && gamer.getMoney() > price) {
-                    gamer.addProperty(this);
-                    gamer.subMoney(price);
-                    isOccupied = true;
-                    owner = gamer;
+                    buyThis(gamer);
                 }
-                System.out.println("Player: " + gamer.getName() + " buy " + toString());
             } else {
-                gamer.subMoney(price);
-                System.out.println("Player: " + gamer.getName() + " gave " + price + " to player: " + owner.getName());
+                gaveRent(gamer);
             }
         } else {
             Scanner sc = new Scanner(System.in);
             if(!isOccupied) {
                 if (gamer.getMoney() > price) {
                     System.out.println("Do you want to buy " + this);
-                    try {
-                        int choice = sc.nextInt();
-                    }catch (Exception e){
-                        int a;
+                    String choice;
+                    while(true){
+                        choice = sc.next();
+                        if(choice.equals("1") || choice.equals("0"))
+                            break;
+                        System.out.println("Please input 0 or 1 !");
                     }
-                    gamer.addProperty(this);
-                    gamer.subMoney(price);
-                    isOccupied = true;
-                    owner = gamer;
+                    if(choice.equals("1")) {
+                        buyThis(gamer);
+                    }
                 } else {
                     System.out.println("No enough Money to buy!");
                 }
-
-                System.out.println("Player: " + gamer.getName() + " buy " + toString());
             } else {
-                gamer.subMoney(price);
-                System.out.println("Player: " + gamer.getName() + " gave " + price + " to player: " + owner.getName());
+                gaveRent(gamer);
             }
+            sc.close();
         }
     }
+
+    private void buyThis(Gamers gamer){
+        gamer.addProperty(this);
+        gamer.subMoney(price);
+        isOccupied = true;
+        owner = gamer;
+        System.out.println("Player: " + gamer.getName() + " buy " + toString());
+    }
+
+    private void gaveRent(Gamers gamer){
+        gamer.subMoney(rent);
+        owner.addMoney(rent);
+        System.out.println("Player: " + gamer.getName() + " gave " + price + " to player: " + owner.getName());
+    }
+
 }

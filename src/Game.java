@@ -81,9 +81,8 @@ public class Game {
                 if (!gamer.isAlive()) {
                     continue;
                 }
-                Dice dice = new Dice();
-                int res = dice.spin();
-                moveGamer(gamer, res);
+                if(!gamer.getJailStatus())
+                    moveGamer(gamer);
                 if (getWinner() != null)
                     isFinish = true;
 
@@ -101,12 +100,15 @@ public class Game {
         return false;
     }
 
-    void moveGamer(Gamers gamer, int step){
+    void moveGamer(Gamers gamer){
+        Dice dice = new Dice();
+        int step = dice.spin();
+        step += dice.spin();
         int newPosition = gamer.getPosition() + step;
         newPosition %= SQUARE_NUM;
         gamer.setPosition(newPosition);
         System.out.println("Player " + gamer.getName() + " moves to square No." + newPosition + ": " + Square[newPosition]);
-        Square[newPosition].action(gamer, this);
+        Square[gamer.getPosition()].action(gamer);
         if(gamer.isAlive()){
             gamer.nextTurn();
         }

@@ -9,9 +9,12 @@ public abstract class Gamers {
     private int position = 0;
     private int id = 0;
     private String name;
+    private boolean isJailed = false;
+    private int jailDate = 0;
     private boolean isAlive = true;
     private int money = 0;
     private List<Building> property;
+
 
     public abstract void doAction();
 
@@ -45,7 +48,9 @@ public abstract class Gamers {
     public int getTotalStep(){
         return totalStep;
     }
-
+    public boolean getJailStatus() {
+        return isJailed;
+    }
 
     public void addMoney(int amount){
         money += amount;
@@ -66,6 +71,9 @@ public abstract class Gamers {
         this.position = position;
     }
 
+    public void setJailStatus(boolean status){
+        this.isJailed = status;
+    }
     public void nextTurn(){
         totalStep++;
     }
@@ -74,6 +82,9 @@ public abstract class Gamers {
         property.add(building);
     }
 
+    public int spinDice(){
+        return 0;
+    }
 
     @Override
     public String toString() {
