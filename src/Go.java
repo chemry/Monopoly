@@ -5,7 +5,7 @@ public class Go extends Square {
         super(name);
     }
     @Override
-    public void action(Gamers gamer, Game game) {
+    public void action(Gamers gamer) {
         gamer.addMoney(SALARY);
     }
 }

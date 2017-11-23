@@ -81,8 +81,20 @@ public class Game {
                 if (!gamer.isAlive()) {
                     continue;
                 }
-                if(!gamer.getJailStatus())
-                    moveGamer(gamer);
+                if(gamer.getJailStatus()) {
+                    moveGamer(gamer, 0);
+                } else {
+                    int prePos = gamer.getPosition();
+                    Square[prePos].action(gamer);
+                    int curPos = gamer.getPosition();
+                    if(prePos != curPos){
+                        System.out.println("Player " + gamer.getName() + " moves to square No." + curPos + ": " + Square[curPos]);
+                        Square[curPos].action(gamer);
+                        if(gamer.isAlive()){
+                            gamer.nextTurn();
+                        }
+                    }
+                }
                 if (getWinner() != null)
                     isFinish = true;
 
@@ -100,10 +112,12 @@ public class Game {
         return false;
     }
 
-    void moveGamer(Gamers gamer){
-        Dice dice = new Dice();
-        int step = dice.spin();
-        step += dice.spin();
+    void moveGamer(Gamers gamer, int step){
+        if(step == 0) {
+            Dice dice = new Dice();
+            step += dice.spin();
+            step += dice.spin();
+        }
         int newPosition = gamer.getPosition() + step;
         newPosition %= SQUARE_NUM;
         gamer.setPosition(newPosition);
@@ -114,7 +128,9 @@ public class Game {
         }
     }
 
-
+    private boolean doubleFace(Gamers gamer){
+        return false;
+    }
 
     /**
      * @return the list of the winner (may have more than one)

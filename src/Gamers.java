@@ -51,7 +51,9 @@ public abstract class Gamers {
     public boolean getJailStatus() {
         return isJailed;
     }
-
+    public int getJailDate(){
+        return jailDate;
+    }
     public void addMoney(int amount){
         money += amount;
     }
@@ -71,9 +73,21 @@ public abstract class Gamers {
         this.position = position;
     }
 
+    public void reduceJailDate(){
+        jailDate--;
+    }
+
     public void setJailStatus(boolean status){
         this.isJailed = status;
+        if(status)
+            jailDate = 3;
     }
+
+    public void setFree(){
+        this.isJailed = false;
+        jailDate = 0;
+    }
+
     public void nextTurn(){
         totalStep++;
     }
@@ -82,9 +96,6 @@ public abstract class Gamers {
         property.add(building);
     }
 
-    public int spinDice(){
-        return 0;
-    }
 
     @Override
     public String toString() {

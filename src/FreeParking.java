@@ -4,7 +4,7 @@ public class FreeParking extends Square{
     }
 
     @Override
-    public void action(Gamers gamer, Game game) {
-
+    public void action(Gamers gamer) {
+        System.out.println("Free Parking!");
     }
 }
