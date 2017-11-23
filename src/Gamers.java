@@ -12,15 +12,15 @@ public abstract class Gamers {
     private boolean isJailed = false;
     private int jailDate = 0;
     private boolean isAlive = true;
-    private int money = 0;
+    private int money = 2000;
     private List<Building> property;
 
 
-    public abstract void doAction();
+    public abstract int doAction();
 
     public Gamers(int id){
         this.id = id;
-        this.name = "Player: " + id;
+        this.name = "P" + id;
         property = new ArrayList<>();
     }
 

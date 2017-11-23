@@ -1,5 +1,5 @@
 public class GoToJail extends Square{
-    private static final int JAIL = 6;
+    private static final int JAIL = 5;
 
     public GoToJail(String name) {
         super(name);

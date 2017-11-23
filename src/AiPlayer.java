@@ -1,9 +1,9 @@
 public class AiPlayer extends Gamers {
-    public AiPlayer(){
-        super(1);
+    public AiPlayer(int id){
+        super(id);
     }
     @Override
-    public void doAction() {
-
+    public int doAction() {
+        return 1;
     }
 }

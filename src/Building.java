@@ -29,14 +29,15 @@ public class Building extends Square {
                 if (rand.nextBoolean() && gamer.getMoney() > price) {
                     buyThis(gamer);
                 }
-            } else {
+            } else if (!gamer.equals(owner)){
                 gaveRent(gamer);
             }
         } else {
             Scanner sc = new Scanner(System.in);
             if(!isOccupied) {
                 if (gamer.getMoney() > price) {
-                    System.out.println("Do you want to buy " + this);
+                    System.out.print("Do you want to buy " + this + "? price: " + price);
+                    System.out.println(" (remain money: " + gamer.getMoney() + ")");
                     String choice;
                     while(true){
                         choice = sc.next();
@@ -50,10 +51,10 @@ public class Building extends Square {
                 } else {
                     System.out.println("No enough Money to buy!");
                 }
-            } else {
+            } else if (!gamer.equals(owner)){
                 gaveRent(gamer);
             }
-            sc.close();
+            //sc.close();
         }
     }
 
@@ -62,13 +63,16 @@ public class Building extends Square {
         gamer.subMoney(price);
         isOccupied = true;
         owner = gamer;
-        System.out.println("Player: " + gamer.getName() + " buy " + toString());
+        System.out.print("Player " + gamer.getName() + " buy " + toString());
+        System.out.println(" (remain money: " + gamer.getMoney() + ")");
     }
 
     private void gaveRent(Gamers gamer){
         gamer.subMoney(rent);
         owner.addMoney(rent);
-        System.out.println("Player: " + gamer.getName() + " gave " + price + " to player: " + owner.getName());
+        System.out.print("Player " + gamer.getName() + " gave " + rent + " to player: " + owner.getName());
+        System.out.println(" (player " + gamer.getName() + " remain money: " + gamer.getMoney() + ", " +
+                "player " + owner.getName() + " remain money: " + owner.getMoney() + ")");
     }
 
 }

@@ -9,6 +9,8 @@ public class Tax extends Square {
     public void action(Gamers gamer) {
         double tax = gamer.getMoney() * INCOMETAX;
         tax = tax - tax % 10;
+        System.out.print("Player " + gamer.getName() + " loss " + (int)tax + " money!");
         gamer.subMoney((int)tax);
+        System.out.println(" (remain money: " + gamer.getMoney() + ")");
     }
 }

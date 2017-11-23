@@ -5,19 +5,30 @@ import java.util.Scanner;
 public class Monopoly {
 
     public static void main(String[] args){
-        /*Scanner sc = new Scanner(System.in);
-        String a = "-1";
+        System.out.println("Monopoly!\n=====================");
+        Scanner sc = new Scanner(System.in);
+        String input;
+        System.out.println("Input number of human player (0 - 6):");
         while(true){
-            a = sc.next();
-            if(a.equals("1") || a.equals("0"))
+            input = sc.next();
+            if(input.length() == 1 && ('0' <= input.charAt(0) && input.charAt(0) <= '6'))
                 break;
-            System.out.println("Please input 0 or 1 !");
+            System.out.println("Please input between 0 - 6 !");
         }
-        System.out.println(a);*/
-        int p = 111;
-        double t = p * 0.1;
-        t = t - t % 10;
-        p = p - (int) t;
-        System.out.println(p);
+        int humanNum = input.charAt(0) - '0';
+        int leastAi = humanNum <= 1 ? 2 - humanNum : 0;
+        int mostAi = 6 - humanNum;
+        System.out.println("Input number of AI player (" + leastAi + " - " + mostAi + "):");
+        while(true){
+            input = sc.next();
+            if(input.length() == 1 && ((leastAi + '0') <= input.charAt(0) && input.charAt(0) <= (mostAi + '0')))
+                break;
+            System.out.println("Please input between " + leastAi + " - " + mostAi + "!");
+        }
+        int aiNum = input.charAt(0) - '0';
+        System.out.println("HUMAN: " + humanNum + "\nAI:" + aiNum);
+        //sc.close();
+        Game game = new Game(humanNum, aiNum);
+        game.startGame();
     }
 }

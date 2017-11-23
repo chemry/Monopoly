@@ -6,6 +6,8 @@ public class Go extends Square {
     }
     @Override
     public void action(Gamers gamer) {
+        System.out.print("Player " + gamer.getName() + " get a salary of " + SALARY);
         gamer.addMoney(SALARY);
+        System.out.println(" (remain money: " + gamer.getMoney() + ")");
     }
 }

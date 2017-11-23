@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * use to record the status of a game
@@ -30,7 +27,7 @@ public class Game {
      */
     public Game(int humanPlayerNum, int aiPlayerNum) {
         Square = new Square[SQUARE_NUM];
-        Gamers = new ArrayList<Gamers>();
+        Gamers = new ArrayList<>();
 
         this.humanPlayerNum = humanPlayerNum;
         this.aiPlayerNum = aiPlayerNum;
@@ -56,15 +53,16 @@ public class Game {
                     Square[i] = new FreeParking(squareName[i]);
                     break;
                 default:
-                    Square[i] = new Building(squareName[i], buildingPrice[0][i], buildingPrice[1][i]);
+                    //System.out.println(i);
+                    Square[i] = new Building(squareName[i], buildingPrice[i][0], buildingPrice[i][1]);
                     break;
             }
         }
-
+        int id = 1;
         for(int i = 0; i < humanPlayerNum; i++)
-            Gamers.add(new HumanPlayer());
+            Gamers.add(new HumanPlayer(id++));
         for(int i = 0; i < aiPlayerNum; i++)
-            Gamers.add(new AiPlayer());
+            Gamers.add(new AiPlayer(id++));
 
 
     }
@@ -78,17 +76,23 @@ public class Game {
         while(!isFinish){
             //do something
             for (Gamers gamer : Gamers) {
-                if (!gamer.isAlive()) {
+                if (isFinish || !gamer.isAlive()) {
+                    //System.out.println(gamer.getName() + " " + isFinish + " " + gamer.isAlive());
                     continue;
                 }
-                if(gamer.getJailStatus()) {
-                    moveGamer(gamer, 0);
+                int choice = gamer.doAction();
+                if (choice == 2){
+                    drawBoard();
+                }
+                if(!gamer.getJailStatus()) {
+                    moveGamer(gamer);
                 } else {
                     int prePos = gamer.getPosition();
                     Square[prePos].action(gamer);
                     int curPos = gamer.getPosition();
                     if(prePos != curPos){
-                        System.out.println("Player " + gamer.getName() + " moves to square No." + curPos + ": " + Square[curPos]);
+                        System.out.println("Player " + gamer.getName() + " moves to square No." + (curPos + 1) + ": " + Square[curPos]);
+
                         Square[curPos].action(gamer);
                         if(gamer.isAlive()){
                             gamer.nextTurn();
@@ -102,7 +106,7 @@ public class Game {
 
             curTurn++;
         }
-
+        System.out.println(Arrays.toString(getWinner().toArray()));
     }
 
     /**
@@ -112,12 +116,11 @@ public class Game {
         return false;
     }
 
-    void moveGamer(Gamers gamer, int step){
-        if(step == 0) {
-            Dice dice = new Dice();
-            step += dice.spin();
-            step += dice.spin();
-        }
+    void moveGamer(Gamers gamer){
+        Dice dice = new Dice();
+        int step = dice.spin();
+        step += dice.spin();
+
         int newPosition = gamer.getPosition() + step;
         newPosition %= SQUARE_NUM;
         gamer.setPosition(newPosition);
@@ -128,9 +131,9 @@ public class Game {
         }
     }
 
-    private boolean doubleFace(Gamers gamer){
+    /*private boolean doubleFace(Gamers gamer){
         return false;
-    }
+    }*/
 
     /**
      * @return the list of the winner (may have more than one)
@@ -171,6 +174,10 @@ public class Game {
             }
         }
         return gList;
+    }
+
+    private void drawBoard(){
+
     }
 
 }
