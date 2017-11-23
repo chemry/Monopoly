@@ -8,7 +8,7 @@ public class Game {
     private static final int MAX_TURN = 100;
 
     private Square[] Square;
-    private List<Gamers> Gamers;
+    private Gamers[] Gamers;
     private static final String[] squareName = {"Go", "Central", "Wan Chai", "Tax", "Stanley", "Jail", "Shek O",
             "Mong Kok", "Chance", "Tsing Yi", "Free Parking", "Shatin", "Chance", "Tuen Men", "Tai Po", "Go To Jail",
             "Sai Kung", "Yuen Long", "Chance", "Tai O"};
@@ -18,6 +18,7 @@ public class Game {
 
     private int humanPlayerNum;
     private int aiPlayerNum;
+    private int totalPlayer;
     private int curTurn = 0;
     private int curGamer = 0;
 
@@ -27,7 +28,8 @@ public class Game {
      */
     public Game(int humanPlayerNum, int aiPlayerNum) {
         Square = new Square[SQUARE_NUM];
-        Gamers = new ArrayList<>();
+        //Gamers = new ArrayList<>();
+        totalPlayer = humanPlayerNum + aiPlayerNum;
 
         this.humanPlayerNum = humanPlayerNum;
         this.aiPlayerNum = aiPlayerNum;
@@ -58,11 +60,12 @@ public class Game {
                     break;
             }
         }
+        Gamers = new Gamers[totalPlayer];
         int id = 1;
         for(int i = 0; i < humanPlayerNum; i++)
-            Gamers.add(new HumanPlayer(id++));
+            Gamers[i] = new HumanPlayer(id++);
         for(int i = 0; i < aiPlayerNum; i++)
-            Gamers.add(new AiPlayer(id++));
+            Gamers[i + humanPlayerNum] = new AiPlayer(id++);
 
 
     }
@@ -76,36 +79,50 @@ public class Game {
         boolean isFinish = false;
         while(!isFinish){
             //do something
-            for (Gamers gamer : Gamers) {
-                if (isFinish || !gamer.isAlive()) {
-                    //System.out.println(gamer.getName() + " " + isFinish + " " + gamer.isAlive());
+            for (int i = 0; i < totalPlayer; i++) {
+                System.out.println("here: " + Arrays.toString(Gamers));
+                if (isFinish || !Gamers[i].isAlive()) {
+                    //System.out.println(Gamers[i].getName() + " " + isFinish + " " + Gamers[i].isAlive());
                     continue;
                 }
                 int choice = 0;
                 while (choice != 1){
-                    choice = gamer.doAction();
+                    choice = Gamers[i].doAction();
                     if(choice == 2) {
                         drawBoard();
                         //continue;
                     } else if (choice == 3){
                         System.out.println("change player");
-                        List p = gamer.getProperty();
-                        gamer = new AiPlayer(5);
+                        List<Building> property = Gamers[i].getProperty();
+                        Gamers[i] = new AiPlayer(i + 1);
+                        Gamers[i].setProperty(property);
+                        for(Building building : property){
+                            building.setOwner(Gamers[i]);
+
+                        }
+                        System.out.println(Gamers[i]);
+                    } else if(choice == 4){
+                        System.out.println("clear property");
+                        List<Building> property = Gamers[i].getProperty();
+                        Gamers[i].setAlive(false);
+                        clearProperty(Gamers[i]);
+                        break;
                     }
-
                 }
-                if(!gamer.getJailStatus()) {
-                    moveGamer(gamer);
+                if (!Gamers[i].isAlive()) {
+                    continue;
+                }
+                if(!Gamers[i].getJailStatus()) {
+                    moveGamer(Gamers[i]);
                 } else {
-                    int prePos = gamer.getPosition();
-                    Square[prePos].action(gamer);
-                    int curPos = gamer.getPosition();
+                    int prePos = Gamers[i].getPosition();
+                    Square[prePos].action(Gamers[i]);
+                    int curPos = Gamers[i].getPosition();
                     if(prePos != curPos){
-                        System.out.println("Player " + gamer.getName() + " moves to square No." + (curPos + 1) + ": " + Square[curPos]);
-
-                        Square[curPos].action(gamer);
-                        if(gamer.isAlive()){
-                            gamer.nextTurn();
+                        System.out.println("Player " + Gamers[i].getName() + " moves to square No." + (curPos + 1) + ": " + Square[curPos]);
+                        Square[curPos].action(Gamers[i]);
+                        if(Gamers[i].isAlive()){
+                            Gamers[i].nextTurn();
                         }
                     }
                 }
@@ -189,6 +206,13 @@ public class Game {
 
     private void drawBoard(){
         System.out.println("A board");
+    }
+
+    private void clearProperty(Gamers gamer){
+        List<Building> property = gamer.getProperty();
+        for(Building building: property){
+            building.setOccupied(false);
+        }
     }
 
 }

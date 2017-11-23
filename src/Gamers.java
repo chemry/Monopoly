@@ -50,7 +50,7 @@ public abstract class Gamers {
     public int getMoney(){
         return money;
     }
-    public List getProperty(){
+    public List<Building> getProperty(){
         return property;
     }
     public int getTotalStep(){
@@ -91,6 +91,10 @@ public abstract class Gamers {
             jailDate = 3;
     }
 
+    public void setAlive(boolean alive){
+        isAlive = alive;
+    }
+
     public void setFree(){
         this.isJailed = false;
         jailDate = 0;
@@ -104,13 +108,15 @@ public abstract class Gamers {
         property.add(building);
     }
 
-    //public void addProperty(List<> property)
+    public void setProperty(List<Building> property){
+        this.property = property;
+    }
 
 
     @Override
     public String toString() {
         String s = "Player: " + name;
-        s += "Properties: "  + property.toString();
+        s += " Properties: "  + property.toString();
         return s;
     }
 }

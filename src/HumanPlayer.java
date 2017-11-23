@@ -6,7 +6,7 @@ public class HumanPlayer extends Gamers {
     }
     @Override
     public int doAction() {
-        System.out.println("Do you want to:\n1: continue\n2: report\n3: auto\n4: retire\n5: save\n6: load");
+        System.out.println(this.getName() + ", Do you want to:\n1: continue\n2: report\n3: auto\n4: retire\n5: save\n6: load");
         Scanner sc = new Scanner(System.in);
         String input;
         System.out.println("Input your choice (1 - 6):");

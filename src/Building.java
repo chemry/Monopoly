@@ -75,4 +75,11 @@ public class Building extends Square {
                 "player " + owner.getName() + " remain money: " + owner.getMoney() + ")");
     }
 
+    public void setOwner(Gamers gamer){
+        owner = gamer;
+    }
+
+    public void setOccupied(boolean occupied){
+        this.isOccupied = occupied;
+    }
 }
