@@ -69,8 +69,9 @@ public class Game {
 
     /**
      * start the game
+     * @return the status of the game,
      */
-    public void startGame(){
+    public int startGame(){
         System.out.println("Game Start!");
         boolean isFinish = false;
         while(!isFinish){
@@ -80,9 +81,18 @@ public class Game {
                     //System.out.println(gamer.getName() + " " + isFinish + " " + gamer.isAlive());
                     continue;
                 }
-                int choice = gamer.doAction();
-                if (choice == 2){
-                    drawBoard();
+                int choice = 0;
+                while (choice != 1){
+                    choice = gamer.doAction();
+                    if(choice == 2) {
+                        drawBoard();
+                        //continue;
+                    } else if (choice == 3){
+                        System.out.println("change player");
+                        List p = gamer.getProperty();
+                        gamer = new AiPlayer(5);
+                    }
+
                 }
                 if(!gamer.getJailStatus()) {
                     moveGamer(gamer);
@@ -107,6 +117,7 @@ public class Game {
             curTurn++;
         }
         System.out.println(Arrays.toString(getWinner().toArray()));
+        return 0;
     }
 
     /**
@@ -177,7 +188,7 @@ public class Game {
     }
 
     private void drawBoard(){
-
+        System.out.println("A board");
     }
 
 }

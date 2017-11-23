@@ -5,6 +5,8 @@ import java.util.List;
  * an abstract class
  */
 public abstract class Gamers {
+    private static final int INITMONEY = 2000;
+
     private int totalStep = 0;
     private int position = 0;
     private int id = 0;
@@ -12,12 +14,18 @@ public abstract class Gamers {
     private boolean isJailed = false;
     private int jailDate = 0;
     private boolean isAlive = true;
-    private int money = 2000;
+    private int money = INITMONEY;
     private List<Building> property;
 
 
+    /**
+     * @return the choice of the gamer, ai will always return 1, human player will return between 1 - 6
+     */
     public abstract int doAction();
 
+    /**
+     * @param id the id of the gamer
+     */
     public Gamers(int id){
         this.id = id;
         this.name = "P" + id;
@@ -95,6 +103,8 @@ public abstract class Gamers {
     public void addProperty(Building building){
         property.add(building);
     }
+
+    //public void addProperty(List<> property)
 
 
     @Override
