@@ -3,7 +3,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Monopoly {
-
+    private static final int NAME_MAX_LENGTH = 10;
     public static void main(String[] args){
         System.out.println("Monopoly!\n=====================");
         Scanner sc = new Scanner(System.in);
@@ -27,15 +27,25 @@ public class Monopoly {
         }
         int aiNum = input.charAt(0) - '0';
         //System.out.println("HUMAN: " + humanNum + "\nAI:" + aiNum);
-        String[] names = new String[humanNum];
+        String[] humanNames = new String[humanNum];
+        String[] aiNames = new String[aiNum];
         for(int i = 0; i < humanNum; i++){
-            System.out.println("Please input P" + (i + 1) + "'s name:");
-            names[i] = sc.next();
+            System.out.println("Please input P" + (i + 1) + "'s name (1 - 10 characters):");
+            humanNames[i] = sc.next();
+            while(humanNames[i].length() > NAME_MAX_LENGTH){
+                System.out.println("input 1 - 14 characters:");
+                humanNames[i] = sc.next();
+            }
         }
+        for(int i = 0; i < aiNum; i++){
+            aiNames[i] = (humanNum + i + 1) + "";
+        }
+
         //sc.close();
-        Game game = new Game(names, aiNum);
-        int result = 0;
-        while(result == 0) {
+        Game game = new Game(humanNames, aiNames);
+        int result = game.startGame();;
+        while(result == -1) {
+            game = new Game();
             result = game.startGame();
         }
         System.out.println("Game Finished!!!!!!");

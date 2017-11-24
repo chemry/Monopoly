@@ -116,6 +116,10 @@ public abstract class Gamers {
         this.money = money;
     }
 
+    public void setJailDate(int jailDate){
+        this.jailDate = jailDate;
+    }
+
 
     @Override
     public String toString() {
