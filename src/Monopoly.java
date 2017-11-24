@@ -1,9 +1,14 @@
-import java.util.InputMismatchException;
-import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * the Main class for CMD version
+ */
 public class Monopoly {
     private static final int NAME_MAX_LENGTH = 10;
+
+    /**
+     * @param args parameter of main
+     */
     public static void main(String[] args){
         System.out.println("Monopoly!\n=====================");
         Scanner sc = new Scanner(System.in);
@@ -43,10 +48,14 @@ public class Monopoly {
 
         //sc.close();
         Game game = new Game(humanNames, aiNames);
-        int result = game.startGame();;
+        int result = game.startGame();
         while(result == -1) {
             game = new Game();
             result = game.startGame();
+            while(result == 0){
+                game = new Game();
+                result = game.startGame();
+            }
         }
         System.out.println("Game Finished!!!!!!");
     }

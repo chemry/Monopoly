@@ -75,22 +75,35 @@ public class Building extends Square {
                 "player " + owner.getName() + " remain money: " + owner.getMoney() + ")");
     }
 
+    /**
+     * @param gamer set the owenr of the building
+     */
     public void setOwner(Gamers gamer){
         owner = gamer;
+        this.isOccupied = true;
     }
 
+    /**
+     * @param occupied the status of the building
+     */
     public void setOccupied(boolean occupied){
         this.isOccupied = occupied;
     }
 
+    /**
+     * @return the owenr of the building
+     */
     public Gamers getOwner(){
         return owner;
     }
 
-    public boolean isOccupied(){
+    /*public boolean isOccupied(){
         return isOccupied;
-    }
+    }*/
 
+    /**
+     * @return the name of the building
+     */
     public String getName(){
         return super.toString();
     }

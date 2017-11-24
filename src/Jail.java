@@ -1,8 +1,15 @@
 import java.security.SecureRandom;
 import java.util.Scanner;
 
+/**
+ * a jail square
+ */
 public class Jail extends Square{
     private static final int FINE = 90;
+
+    /**
+     * @param name name of the square
+     */
     public Jail(String name){
         super(name);
     }

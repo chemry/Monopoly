@@ -1,6 +1,12 @@
+/**
+ * a square class
+ */
 abstract public class Square {
     private String name;
-    private static final int SQUARE_NUM = 20;
+
+    /**
+     * @param name the name of the square
+     */
     public Square(String name){
         this.name = name;
     }
@@ -9,6 +15,10 @@ abstract public class Square {
     public String toString(){
         return name;
     }
+
+    /**
+     * @param gamer do actions to the gamer
+     */
     public abstract void action(Gamers gamer);
 
 }

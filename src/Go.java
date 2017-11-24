@@ -1,6 +1,12 @@
+/**
+ * a go square
+ */
 public class Go extends Square {
     private static final int SALARY = 1500;
 
+    /**
+     * @param name name of the square
+     */
     public Go(String name){
         super(name);
     }

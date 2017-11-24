@@ -21,7 +21,7 @@ public class Game {
     private int aiPlayerNum;
     private int totalPlayer;
     private int curTurn = 0;
-    private int curGamer = 0;
+    // int curGamer = 0;
     private int st = 0;
 
 
@@ -86,26 +86,19 @@ public class Game {
             String[] datas = new String[totalPlayer];
             int p = 0;
             while ((string = bReader.readLine()) != null) {
-                System.out.println(string);
+                //System.out.println(string);
                 datas[p++] = string;
-            }
-
-            for (int i = 0; i < humanPlayerNum; i++) {
-                String[] gamerInfo = datas[i].split("-");
-                Gamers[i] = new HumanPlayer(i, gamerInfo[0]);
-
-                //gamerInfo[4] = gamerInfo[4].substring(1, gamerInfo[4].length() - 1);
-            }
-
-            for (int i = 0; i < aiPlayerNum; i++) {
-                String[] gamerInfo = datas[i].split("-");
-                Gamers[i + humanPlayerNum] = new AiPlayer(i + humanPlayerNum);
-                //gamerInfo[4] = gamerInfo[4].substring(1, gamerInfo[4].length() - 1);
             }
 
             for (int i = 0; i < totalPlayer; i++) {
                 String[] gamerInfo = datas[i].split("-");
                 gamerInfo[4] = gamerInfo[4].substring(1, gamerInfo[4].length() - 1);
+                if(gamerInfo[7].equals("Human")){
+                    Gamers[i] = new HumanPlayer(i, gamerInfo[0]);
+                } else {
+                    Gamers[i] = new AiPlayer(i, gamerInfo[0]);
+                }
+
                 List<Building> property = new ArrayList<>();
                 for (String buildingName : gamerInfo[4].split(", ")) {
                     for (int j = 0; j < SQUARE_NUM; j++) {
@@ -125,14 +118,15 @@ public class Game {
                 boolean isAlive = Boolean.parseBoolean(gamerInfo[6]);
                 Gamers[i].setPosition(pos);
                 Gamers[i].setMoney(money);
-                Gamers[i].setJailDate(jailDate);
                 Gamers[i].setJailStatus(jailStatus);
+                Gamers[i].setJailDate(jailDate);
                 Gamers[i].setAlive(isAlive);
             }
 
             fr.close();
         } catch (IOException e) {
             System.out.println("File open or reading error!, Please check if the file exists or is the file in correct format");
+            st = -1;
         }
 
     }
@@ -164,6 +158,7 @@ public class Game {
      * @return the status of the game, -1 for reload.
      */
     public int startGame() {
+        if(st == -1) return 0;
         System.out.println("Game Start!");
         boolean isFinish = false;
         int firstEnter = st;
@@ -184,19 +179,20 @@ public class Game {
                         drawBoard();
                         //continue;
                     } else if (choice == 3) {
-                        System.out.println("change player");
+                        System.out.print("change player to AI");
                         List<Building> property = Gamers[i].getProperty();
                         int money = Gamers[i].getMoney();
                         Gamers[i] = new AiPlayer(i + 1);
+                        System.out.println(" " + Gamers[i].getName());
                         Gamers[i].setProperty(property);
                         Gamers[i].setMoney(money);
                         for (Building building : property) {
                             building.setOwner(Gamers[i]);
                         }
-                        System.out.println(Gamers[i]);
+                        //System.out.println(Gamers[i]);
                     } else if (choice == 4) {
                         System.out.println("clear property");
-                        List<Building> property = Gamers[i].getProperty();
+                        //List<Building> property = Gamers[i].getProperty();
                         Gamers[i].setAlive(false);
                         clearProperty(Gamers[i]);
                         break;
@@ -243,6 +239,9 @@ public class Game {
         return false;
     }
 
+    /**
+     * @param gamer the gamers to be moved
+     */
     void moveGamer(Gamers gamer) {
         Dice dice = new Dice();
         int step = dice.spin();
@@ -306,8 +305,8 @@ public class Game {
     private void drawBoard() {
         System.out.println("A board");
         System.out.println();
-        Queue<String>[] PS = new Queue[21];
-        for (int i = 0; i < 21; i++)
+        Queue<String>[] PS = new Queue[(SQUARE_NUM * 2 - 1)];
+        for (int i = 0; i < (SQUARE_NUM * 2 - 1); i++)
             PS[i] = new LinkedList<>();
         for (Gamers gamer : Gamers) {
             if (!gamer.isAlive())
@@ -317,48 +316,48 @@ public class Game {
         }
         for (int i = 0; i < 6; i++) System.out.print("----------------");
         System.out.print("\n|");
-        for (int i = 10; i < 16; i++) {
-            System.out.format("%-2d             |", i + 1);
+        for (int i = 10; i < (SQUARE_NUM - 4); i++) {
+            System.out.format("%-15s|", printOwner(i + 1));
         }
         System.out.print("\n|");
-        for (int i = 10; i < 16; i++) {
+        for (int i = 10; i < (SQUARE_NUM - 4); i++) {
             System.out.format("%-15s|", squareName[i]);
         }
         System.out.print("\n|");
         for (int k = 0; k < 6; k++) {
-            for (int i = 10; i < 16; i++) {
+            for (int i = 10; i < (SQUARE_NUM - 4); i++) {
                 if (PS[i].isEmpty()) System.out.format("%15s|", "");
                 else System.out.format("%-15s|", PS[i].poll());
             }
             System.out.print("\n|");
         }
         for (int i = 0; i < 6; i++) System.out.print("----------------");
-        System.out.print("\b|\n|");
+        System.out.print("|\n|");
         for (int k = 0; k < 4; k++) {
             System.out.print("---------------|");
             System.out.format("%63s", "");
             System.out.print("|---------------|\n|");
-            System.out.format("%-2d             |", 10 - k);
+            System.out.format("%-15s|", printOwner(10 - k));
             System.out.format("%63s|", "");
-            System.out.format("%-2d             |", 17 + k);
+            System.out.format("%-15s|", printOwner((SQUARE_NUM - 3) + k));
             System.out.print("\n|");
             System.out.format("%-15s|", squareName[9 - k]);
             System.out.format("%63s|", "");
-            System.out.format("%-15s|", squareName[16 + k]);
+            System.out.format("%-15s|", squareName[(SQUARE_NUM - 4) + k]);
             System.out.print("\n|");
             for (int i = 0; i < 6; i++) {
                 if (PS[10 - k].isEmpty()) System.out.format("%15s|", "");
                 else System.out.format("%-15s|", PS[10 - k].poll());
                 System.out.format("%63s|", "");
-                if (PS[17 + k].isEmpty()) System.out.format("%15s|", "");
-                else System.out.format("%-15s|", PS[17 + k].poll());
+                if (PS[(SQUARE_NUM - 3) + k].isEmpty()) System.out.format("%15s|", "");
+                else System.out.format("%-15s|", PS[(SQUARE_NUM - 3) + k].poll());
                 System.out.print("\n|");
             }
         }
         for (int i = 0; i < 6; i++) System.out.print("----------------");
         System.out.print("\n|");
         for (int i = 0; i < 6; i++) {
-            System.out.format("%-2d             |", 6 - i);
+            System.out.format("%-15s|", printOwner(6 - i));
         }
         System.out.print("\n|");
         for (int i = 0; i < 6; i++) {
@@ -376,14 +375,14 @@ public class Game {
         System.out.println();
     }
 
-    private String printOwner(int i){
+    private String printOwner(int i) {
         i -= 1;
-        if(!(Square[i] instanceof Building)) return i + "";
+        if (!(Square[i] instanceof Building)) return i + "";
         Building b = (Building) Square[i];
-        if(b.getOwner() == null)
+        if (b.getOwner() == null)
             return i + " (unowned)";
         else
-            return i + " (" + b.getOwner() + ")";
+            return i + " (" + b.getOwner().getName() + ")";
     }
 
 
@@ -435,7 +434,8 @@ public class Game {
 
             for (Gamers gamer : Gamers) {
                 s = gamer.getName() + "-" + gamer.getPosition() + "-" + gamer.getMoney() + "-" + gamer.getJailDate()
-                        + "-" + gamer.getProperty() + "-" + gamer.getJailStatus() + "-" + gamer.isAlive();
+                        + "-" + gamer.getProperty() + "-" + gamer.getJailStatus() + "-" + gamer.isAlive()
+                        + "-" + ((gamer instanceof HumanPlayer) ? "Human" : "AI");
                 bw.write(s + "\r\n");
             }
             bw.flush();
@@ -445,10 +445,6 @@ public class Game {
             e.printStackTrace();
         }
 
-
-    }
-
-    private void loadData() {
 
     }
 

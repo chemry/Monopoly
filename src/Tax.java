@@ -1,6 +1,12 @@
+/**
+ * a tax square
+ */
 public class Tax extends Square {
     private static final double INCOMETAX = 0.1;
 
+    /**
+     * @param name the name of the square
+     */
     public Tax (String name){
         super(name);
     }

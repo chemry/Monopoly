@@ -1,9 +1,20 @@
 import java.util.Scanner;
 
+/**
+ * a human player
+ */
 public class HumanPlayer extends Gamers {
+    /**
+     * @param id the id of the human player
+     */
     public HumanPlayer(int id){
         super(id);
     }
+
+    /**
+     * @param id id of the human player
+     * @param name name of the human player
+     */
     public HumanPlayer(int id, String name){
         super(id, name);
     }
