@@ -82,4 +82,17 @@ public class Building extends Square {
     public void setOccupied(boolean occupied){
         this.isOccupied = occupied;
     }
+
+    public Gamers getOwner(){
+        return owner;
+    }
+
+    public boolean isOccupied(){
+        return isOccupied;
+    }
+
+    public String getName(){
+        return super.toString();
+    }
+
 }

@@ -4,6 +4,9 @@ public class HumanPlayer extends Gamers {
     public HumanPlayer(int id){
         super(id);
     }
+    public HumanPlayer(int id, String name){
+        super(id, name);
+    }
     @Override
     public int doAction() {
         System.out.println(this.getName() + ", Do you want to:\n1: continue\n2: report\n3: auto\n4: retire\n5: save\n6: load");

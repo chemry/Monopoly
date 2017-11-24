@@ -26,9 +26,18 @@ public class Monopoly {
             System.out.println("Please input between " + leastAi + " - " + mostAi + "!");
         }
         int aiNum = input.charAt(0) - '0';
-        System.out.println("HUMAN: " + humanNum + "\nAI:" + aiNum);
+        //System.out.println("HUMAN: " + humanNum + "\nAI:" + aiNum);
+        String[] names = new String[humanNum];
+        for(int i = 0; i < humanNum; i++){
+            System.out.println("Please input P" + (i + 1) + "'s name:");
+            names[i] = sc.next();
+        }
         //sc.close();
-        Game game = new Game(humanNum, aiNum);
-        game.startGame();
+        Game game = new Game(names, aiNum);
+        int result = 0;
+        while(result == 0) {
+            result = game.startGame();
+        }
+        System.out.println("Game Finished!!!!!!");
     }
 }

@@ -1,3 +1,5 @@
+import javax.script.ScriptContext;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -26,9 +28,10 @@ public class Game {
      * @param humanPlayerNum the number of human player
      * @param aiPlayerNum    the number of AI player
      */
-    public Game(int humanPlayerNum, int aiPlayerNum) {
+    public Game(String[] humanPlayer, int aiPlayerNum) {
         Square = new Square[SQUARE_NUM];
         //Gamers = new ArrayList<>();
+        humanPlayerNum = humanPlayer.length;
         totalPlayer = humanPlayerNum + aiPlayerNum;
 
         this.humanPlayerNum = humanPlayerNum;
@@ -63,7 +66,7 @@ public class Game {
         Gamers = new Gamers[totalPlayer];
         int id = 1;
         for(int i = 0; i < humanPlayerNum; i++)
-            Gamers[i] = new HumanPlayer(id++);
+            Gamers[i] = new HumanPlayer(id++, humanPlayer[i]);
         for(int i = 0; i < aiPlayerNum; i++)
             Gamers[i + humanPlayerNum] = new AiPlayer(id++);
 
@@ -80,11 +83,11 @@ public class Game {
         while(!isFinish){
             //do something
             for (int i = 0; i < totalPlayer; i++) {
-                System.out.println("here: " + Arrays.toString(Gamers));
                 if (isFinish || !Gamers[i].isAlive()) {
                     //System.out.println(Gamers[i].getName() + " " + isFinish + " " + Gamers[i].isAlive());
                     continue;
                 }
+                System.out.println("here: " + Arrays.toString(Gamers));
                 int choice = 0;
                 while (choice != 1){
                     choice = Gamers[i].doAction();
@@ -94,11 +97,12 @@ public class Game {
                     } else if (choice == 3){
                         System.out.println("change player");
                         List<Building> property = Gamers[i].getProperty();
+                        int money = Gamers[i].getMoney();
                         Gamers[i] = new AiPlayer(i + 1);
                         Gamers[i].setProperty(property);
+                        Gamers[i].setMoney(money);
                         for(Building building : property){
                             building.setOwner(Gamers[i]);
-
                         }
                         System.out.println(Gamers[i]);
                     } else if(choice == 4){
@@ -107,6 +111,12 @@ public class Game {
                         Gamers[i].setAlive(false);
                         clearProperty(Gamers[i]);
                         break;
+                    } else if (choice == 5){
+
+                        saveData(i);
+                    } else if (choice == 6){
+                        //loadData();
+                        return -1;
                     }
                 }
                 if (!Gamers[i].isAlive()) {
@@ -133,8 +143,8 @@ public class Game {
 
             curTurn++;
         }
-        System.out.println(Arrays.toString(getWinner().toArray()));
-        return 0;
+        System.out.println("winner" + Arrays.toString(getWinner().toArray()));
+        return 1;
     }
 
     /**
@@ -152,7 +162,7 @@ public class Game {
         int newPosition = gamer.getPosition() + step;
         newPosition %= SQUARE_NUM;
         gamer.setPosition(newPosition);
-        System.out.println("Player " + gamer.getName() + " moves to square No." + newPosition + ": " + Square[newPosition]);
+        System.out.println("Player " + gamer.getName() + " moves to square No." + (newPosition + 1) + ": " + Square[newPosition]);
         Square[gamer.getPosition()].action(gamer);
         if(gamer.isAlive()){
             gamer.nextTurn();
@@ -213,6 +223,83 @@ public class Game {
         for(Building building: property){
             building.setOccupied(false);
         }
+    }
+
+    private void saveData(int curGamer){
+        System.out.println("Please enter the file path");
+        Scanner sc = new Scanner(System.in);
+        String path = sc.next();
+        File file = new File(path);
+        if(file.exists()){
+            System.out.println("File already exist!");
+            return;
+        }
+        boolean createSuc = true;
+        if (!file.getParentFile().exists()) {
+            createSuc = file.getParentFile().mkdirs();
+        }
+        if(!createSuc){
+            System.out.println("File create failed");
+            return;
+        }
+
+        try {
+            createSuc = file.createNewFile();
+        } catch (IOException e) {
+            System.out.println("File create failed");
+            return;
+        }
+        if(!createSuc && !file.exists()){
+            System.out.println("File create failed");
+            return;
+        }
+
+        try {
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            // 1. board status (total turn)
+            // 2. gamer name, position, money, jaildate, property, jailstatus, isalive
+            String s = humanPlayerNum + " " + aiPlayerNum + " " + curTurn + " " + curGamer;
+            bw.write(s + "\r\n");
+
+            bw.write("\r\n");
+
+            for(Gamers gamer : Gamers){
+                s = gamer.getName() + " " + gamer.getPosition() + " " + gamer.getMoney() + " " + gamer.getJailDate()
+                        + " " + gamer.getProperty() + " " + gamer.getJailStatus() + " " + gamer.isAlive();
+                bw.write(s + "\r\n");
+            }
+            bw.flush();
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    private void loadData(){
+        System.out.println("Please enter the file path");
+        Scanner sc = new Scanner(System.in);
+        String path = sc.next();
+        File file = new File(path);
+
+        boolean createSuc = true;
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader bReader = new BufferedReader(fr);
+            String string;
+            while((string = bReader.readLine()) != null){
+                System.out.println(string);
+            }
+            //System.out.println(string);
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

@@ -112,6 +112,10 @@ public abstract class Gamers {
         this.property = property;
     }
 
+    public void setMoney(int money){
+        this.money = money;
+    }
+
 
     @Override
     public String toString() {
