@@ -1,3 +1,5 @@
+package cmd;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,6 +8,8 @@ import java.util.List;
  */
 public abstract class Gamers {
     private static final int INITMONEY = 2000;
+
+    private StdOut stdOut = new StdOut(0);
 
     private int totalStep = 0;
     private int position = 0;
@@ -27,6 +31,7 @@ public abstract class Gamers {
      * @param id the id of the gamer
      */
     public Gamers(int id){
+
         this.id = id;
         this.name = "P" + id;
         property = new ArrayList<>();
@@ -106,7 +111,7 @@ public abstract class Gamers {
      */
     public void subMoney(int amount){
         if(money < amount){
-            System.out.println("Player " + name + " is out of money!");
+            stdOut.println("Player " + name + " is out of money!");
             isAlive = false;
             return;
         }

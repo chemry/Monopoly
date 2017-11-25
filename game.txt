@@ -12,5 +12,5 @@ if new game
 class: Player
 class: AIPlayer
 class: UserPlayer
-class: Game
+class: cmd.Game
 class: Board

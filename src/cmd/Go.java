@@ -1,9 +1,11 @@
+package cmd;
+
 /**
  * a go square
  */
 public class Go extends Square {
     private static final int SALARY = 1500;
-
+    private StdOut stdOut = new StdOut(0);
     /**
      * @param name name of the square
      */
@@ -12,8 +14,8 @@ public class Go extends Square {
     }
     @Override
     public void action(Gamers gamer) {
-        System.out.print("Player " + gamer.getName() + " get a salary of " + SALARY);
+        stdOut.print("Player " + gamer.getName() + " get a salary of " + SALARY);
         gamer.addMoney(SALARY);
-        System.out.println(" (remain money: " + gamer.getMoney() + ")");
+        stdOut.println(" (remain money: " + gamer.getMoney() + ")");
     }
 }

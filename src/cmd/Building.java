@@ -1,3 +1,5 @@
+package cmd;
+
 import java.security.SecureRandom;
 import java.util.Scanner;
 
@@ -9,7 +11,7 @@ public class Building extends Square {
     private Gamers owner;
     private int price;
     private int rent;
-
+    private StdOut stdOut = new StdOut(0);
     /**
      * @param name the name of this square
      * @param price the price of this square
@@ -36,20 +38,20 @@ public class Building extends Square {
             Scanner sc = new Scanner(System.in);
             if(!isOccupied) {
                 if (gamer.getMoney() > price) {
-                    System.out.print("Do you want to buy " + this + "? price: " + price);
-                    System.out.println(" (remain money: " + gamer.getMoney() + ")");
+                    stdOut.print("Do you want to buy " + this + "? price: " + price);
+                    stdOut.println(" (remain money: " + gamer.getMoney() + ")");
                     String choice;
                     while(true){
                         choice = sc.next();
                         if(choice.equals("1") || choice.equals("0"))
                             break;
-                        System.out.println("Please input 0 or 1 !");
+                        stdOut.println("Please input 0 or 1 !");
                     }
                     if(choice.equals("1")) {
                         buyThis(gamer);
                     }
                 } else {
-                    System.out.println("No enough Money to buy!");
+                    stdOut.println("No enough Money to buy!");
                 }
             } else if (!gamer.equals(owner)){
                 gaveRent(gamer);
@@ -63,15 +65,15 @@ public class Building extends Square {
         gamer.subMoney(price);
         isOccupied = true;
         owner = gamer;
-        System.out.print("Player " + gamer.getName() + " buy " + toString());
-        System.out.println(" (remain money: " + gamer.getMoney() + ")");
+        stdOut.print("Player " + gamer.getName() + " buy " + toString());
+        stdOut.println(" (remain money: " + gamer.getMoney() + ")");
     }
 
     private void gaveRent(Gamers gamer){
         gamer.subMoney(rent);
         owner.addMoney(rent);
-        System.out.print("Player " + gamer.getName() + " gave " + rent + " to player: " + owner.getName());
-        System.out.println(" (player " + gamer.getName() + " remain money: " + gamer.getMoney() + ", " +
+        stdOut.print("Player " + gamer.getName() + " gave " + rent + " to player: " + owner.getName());
+        stdOut.println(" (player " + gamer.getName() + " remain money: " + gamer.getMoney() + ", " +
                 "player " + owner.getName() + " remain money: " + owner.getMoney() + ")");
     }
 
@@ -107,5 +109,13 @@ public class Building extends Square {
     public String getName(){
         return super.toString();
     }
+
+    /**
+     * @param caller set the output way
+     */
+    public void setStdOut(int caller){
+        stdOut.setCaller(caller);
+    }
+
 
 }

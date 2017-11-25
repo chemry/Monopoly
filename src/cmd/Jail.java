@@ -1,12 +1,14 @@
+package cmd;
+
 import java.security.SecureRandom;
 import java.util.Scanner;
 
 /**
  * a jail square
  */
-public class Jail extends Square{
+public class Jail extends Square {
     private static final int FINE = 90;
-
+    private StdOut stdOut = new StdOut(0);
     /**
      * @param name name of the square
      */
@@ -17,7 +19,7 @@ public class Jail extends Square{
     @Override
     public void action(Gamers gamer) {
         if(!gamer.getJailStatus()) return;
-        //System.out.println(gamer.getName() + " is in jail? " + gamer.getJailStatus());
+        //stdOut.println(gamer.getName() + " is in jail? " + gamer.getJailStatus());
         Scanner sc = new Scanner(System.in);
         String choice = "0";
         if(gamer.getJailDate() >= 1 && gamer.getMoney() >= FINE) {
@@ -28,12 +30,12 @@ public class Jail extends Square{
                 return;
             }
             if(gamer instanceof HumanPlayer) {
-                System.out.println(gamer.getName() + ", Do you want to pay 90 to Leave ?");
+                stdOut.println(gamer.getName() + ", Do you want to pay 90 to Leave?");
                 while (true) {
                     choice = sc.next();
                     if (choice.equals("1") || choice.equals("0"))
                         break;
-                    System.out.println("Please input 0 or 1 !");
+                    stdOut.println("Please input 0 or 1!");
                 }
             } else {
                 SecureRandom rand = new SecureRandom();
@@ -42,7 +44,7 @@ public class Jail extends Square{
             }
             if (choice.equals("1")) {
                 gamer.subMoney(FINE);
-                System.out.println(gamer.getName() + " gave 90 to leave !");
+                stdOut.println(gamer.getName() + " gave 90 to leave!");
                 gamer.setFree();
                 gamer.setPosition(gamer.getPosition() + tossDie());
                 return;
@@ -51,10 +53,11 @@ public class Jail extends Square{
         }
         int res = tossDoubleFace();
         if(res == 0) {
-            System.out.println("Failed!");
+            stdOut.println(gamer.getName() + " failed to escape by tossing a double face!");
             gamer.reduceJailDate();
         } else {
-            System.out.println("Success!");
+            stdOut.println(gamer.getName() + " successfully escaped by tossing a double face!");
+            gamer.setFree();
             gamer.setPosition(gamer.getPosition() + res);
         }
     }

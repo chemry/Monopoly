@@ -6,8 +6,7 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-
+import cmd.*;
 
 public class Monopoly {
     private JPanel panel1;
@@ -23,7 +22,7 @@ public class Monopoly {
     private JLabel dice1;
     private JPanel paneltest;
     private JLabel player113;
-    public JLabel player111;
+    private JLabel player111;
     private JLabel player112;
     private JLabel player115;
     private JLabel player114;
@@ -147,10 +146,19 @@ public class Monopoly {
     private JButton button03;
     private JButton button4;
     private JTable table1;
+    private JButton button04;
+    private JButton button05;
+    private JButton button06;
+    private JLabel infoField;
+    private JTextArea textArea1;
     private JButton testButton;
     private int cnt = 0;
     private Dice dice = new Dice(dice0, dice1, counter, TextField1);
     private Map<String, JLabel> labelMap = new HashMap<String, JLabel>();
+
+    private String state;
+    private int humanNum;
+    private int aiNum;
 
 
     private boolean field1Vis = false;
@@ -162,6 +170,11 @@ public class Monopoly {
         model.addRow(new Object[]{"well", "something"});
         model.setValueAt("reset", 1, 1);
         table1.setVisible(true);
+
+        MessageConsole mc = new MessageConsole(textArea1);
+        mc.redirectOut(null, System.out);
+        mc.redirectErr(Color.RED, null);
+
         try {
             for(int i = 1; i <= 20; i++) {
                 for(int j = 1; j <= 6; j++) {
@@ -202,13 +215,17 @@ public class Monopoly {
             }
         });
         startButton.addActionListener(e -> {
-            if(Objects.equals(startButton.getText(), "Start!")){
+            if(startButton.getText().equals("NewGame")){
                 System.out.println(field1.getSize());
-                System.out.print("good");
                 if(!field1Vis) {
-
                     field1.setVisible(true);
                     field1Vis = true;
+                    infoField.setText("Please input the number of human player");
+                    String[] info = {"1", "2", "3", "4", "5", "6"};
+                    setButtonText(info);
+                    state = "HumanNum";
+                    Game game = new Game();
+
                 } else {
                     field1.setVisible(false);
                     field1Vis = false;
@@ -216,29 +233,16 @@ public class Monopoly {
             }
 
         });
-    }
 
-    public void testing(){
-        try {
-            for(int i = 1; i <= 20; i++) {
-                for(int j = 1; j <= 6; j++) {
-                    Field temp = this.getClass().getDeclaredField("player" + i + j);
-                    temp.setAccessible(true);
-                    JLabel tempLabel;
-                    tempLabel = (JLabel) temp.get(this);
-                    tempLabel.setVisible(false);
-                }
+        button01.addActionListener(e -> {
+            if(state.equals("HumanNum")){
+                humanNum = 1;
             }
-
-        } catch (Throwable e2) {
-            System.out.println(e2);
-        }
-
-
+        });
     }
-
 
     public static void main(String[] args) {
+
         JFrame frame = new JFrame("Changed");
         frame.setContentPane(new Monopoly().getPanel1());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -247,7 +251,7 @@ public class Monopoly {
         ImageIcon img = new ImageIcon("src/monopoly-board.png");
         JLabel imgLabel = new JLabel(img);
         frame.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));
-        imgLabel.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
+        imgLabel.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
         Container cp = frame.getContentPane();
         //cp.setLayout(new BorderLayout());
         System.out.println(img.getIconHeight() + " " +img.getIconWidth());
@@ -262,4 +266,30 @@ public class Monopoly {
     public void setPanel1(JPanel panel1) {
         this.panel1 = panel1;
     }
+
+    private void setButtonText(String[] info){
+        int l = info.length;
+        if(l <= 0) return;
+        button01.setText(info[0]);
+        if(l >= 2)
+            button02.setText(info[1]);
+        if(l >= 3)
+            button03.setText(info[2]);
+        if(l >= 4)
+            button04.setText(info[3]);
+        if(l >= 5)
+            button05.setText(info[4]);
+        if(l >= 6)
+            button06.setText(info[5]);
+
+    }
+
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+//        paneltest.add(new JScrollPane(textArea1));
+
+        //mc.setMessageLines(100);
+    }
 }
+

@@ -1,9 +1,11 @@
+package cmd;
+
 /**
  * a gotojail square
  */
-public class GoToJail extends Square{
+public class GoToJail extends Square {
     private static final int JAIL = 5;
-
+    private StdOut stdOut = new StdOut(0);
     /**
      * @param name name of the square
      */
@@ -13,7 +15,7 @@ public class GoToJail extends Square{
 
     @Override
     public void action(Gamers gamer) {
-        System.out.println(gamer.getName() + " is sent to Jail....");
+        stdOut.println(gamer.getName() + " is sent to Jail....");
         gamer.setPosition(JAIL);
         gamer.setJailStatus(true);
     }

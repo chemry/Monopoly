@@ -1,3 +1,5 @@
+package cmd;
+
 import java.util.Scanner;
 
 /**
@@ -5,7 +7,6 @@ import java.util.Scanner;
  */
 public class Monopoly {
     private static final int NAME_MAX_LENGTH = 10;
-
     /**
      * @param args parameter of main
      */

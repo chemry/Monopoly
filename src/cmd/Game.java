@@ -1,3 +1,5 @@
+package cmd;
+
 import java.io.*;
 import java.util.*;
 
@@ -8,6 +10,8 @@ public class Game {
     private static final int SQUARE_NUM = 20;
     private static final int MAX_TURN = 100;
 
+    private StdOut stdOut = new StdOut(0);
+    
     private Square[] Square;
     private Gamers[] Gamers;
     private static final String[] squareName = {"Go", "Central", "Wan Chai", "Tax", "Stanley", "Jail", "Shek O",
@@ -48,7 +52,7 @@ public class Game {
                     Square[i] = new FreeParking(squareName[i]);
                     break;
                 default:
-                    //System.out.println(i);
+                    //stdOut.println(i);
                     Square[i] = new Building(squareName[i], buildingPrice[i][0], buildingPrice[i][1]);
                     break;
             }
@@ -59,7 +63,7 @@ public class Game {
      * the constructor for loading a game;
      */
     public Game() {
-        System.out.println("Please enter the file path");
+        stdOut.println("Please enter the file path");
         Scanner sc = new Scanner(System.in);
         String path = sc.next();
         File file = new File(path);
@@ -70,10 +74,10 @@ public class Game {
             BufferedReader bReader = new BufferedReader(fr);
             String string;
             string = bReader.readLine();
-            System.out.println(string);
+            stdOut.println(string);
             //str.split(String sign);
             String[] num = string.split(" ");
-            System.out.println(Arrays.toString(num));
+            //stdOut.println(Arrays.toString(num));
             humanPlayerNum = Integer.parseInt(num[0]);
             aiPlayerNum = Integer.parseInt(num[1]);
             curTurn = Integer.parseInt(num[2]);
@@ -86,7 +90,7 @@ public class Game {
             String[] datas = new String[totalPlayer];
             int p = 0;
             while ((string = bReader.readLine()) != null) {
-                //System.out.println(string);
+                //stdOut.println(string);
                 datas[p++] = string;
             }
 
@@ -125,7 +129,7 @@ public class Game {
 
             fr.close();
         } catch (IOException e) {
-            System.out.println("File open or reading error!, Please check if the file exists or is the file in correct format");
+            stdOut.println("File open or reading error!, Please check if the file exists or is the file in correct format");
             st = -1;
         }
 
@@ -155,23 +159,26 @@ public class Game {
     /**
      * start the game
      *
-     * @return the status of the game, -1 for reload.
+     * @return the status of the game, -1 for reload
      */
     public int startGame() {
         if(st == -1) return 0;
-        System.out.println("Game Start!");
+        stdOut.println("Game Start!");
         boolean isFinish = false;
         int firstEnter = st;
         while (!isFinish) {
             //do something
+            if(getWinner() != null) break;
+            System.out.println("Round " + (curTurn + 1));
+
             for (int i = firstEnter; i < totalPlayer; i++) {
                 firstEnter = 0;
                 if (isFinish || !Gamers[i].isAlive()) {
-                    //System.out.println(Gamers[i].getName() + " " + isFinish + " " + Gamers[i].isAlive());
+                    //stdOut.println(Gamers[i].getName() + " " + isFinish + " " + Gamers[i].isAlive());
                     clearProperty(Gamers[i]);
                     continue;
                 }
-                //System.out.println("here: " + Arrays.toString(Gamers));
+                //stdOut.println("here: " + Arrays.toString(Gamers));
                 int choice = 0;
                 while (choice != 1) {
                     choice = Gamers[i].doAction();
@@ -179,19 +186,19 @@ public class Game {
                         drawBoard();
                         //continue;
                     } else if (choice == 3) {
-                        System.out.print("change player to AI");
+                        stdOut.print("change player to AI");
                         List<Building> property = Gamers[i].getProperty();
                         int money = Gamers[i].getMoney();
                         Gamers[i] = new AiPlayer(i + 1);
-                        System.out.println(" " + Gamers[i].getName());
+                        stdOut.println(" " + Gamers[i].getName());
                         Gamers[i].setProperty(property);
                         Gamers[i].setMoney(money);
                         for (Building building : property) {
                             building.setOwner(Gamers[i]);
                         }
-                        //System.out.println(Gamers[i]);
+                        //stdOut.println(Gamers[i]);
                     } else if (choice == 4) {
-                        System.out.println("clear property");
+                        stdOut.println("clear property");
                         //List<Building> property = Gamers[i].getProperty();
                         Gamers[i].setAlive(false);
                         clearProperty(Gamers[i]);
@@ -214,7 +221,7 @@ public class Game {
                     Square[prePos].action(Gamers[i]);
                     int curPos = Gamers[i].getPosition();
                     if (prePos != curPos) {
-                        System.out.println("Player " + Gamers[i].getName() + " moves to square No." + (curPos + 1) + ": " + Square[curPos]);
+                        stdOut.println("Player " + Gamers[i].getName() + " moves to square No." + (curPos + 1) + ": " + Square[curPos]);
                         Square[curPos].action(Gamers[i]);
                         if (Gamers[i].isAlive()) {
                             Gamers[i].nextTurn();
@@ -228,7 +235,23 @@ public class Game {
 
             curTurn++;
         }
-        System.out.println("winner" + Arrays.toString(getWinner().toArray()));
+        List<Gamers> winner = getWinner();
+        if(curTurn >= MAX_TURN) {
+            System.out.println("Max Turn reached!");
+            if(winner.size() >= 2){
+                System.out.println("Ties!");
+                for(Gamers gamer: Gamers){
+                    System.out.println("Player " + gamer.getName() + " wins with " + gamer.getMoney() + " money");
+                }
+            }else {
+                Gamers gamer = winner.get(0);
+                System.out.println("Player " + gamer.getName() + " wins with " + gamer.getMoney() + " money");
+            }
+        } else {
+            System.out.println("Only one player is alive!");
+            Gamers gamer = winner.get(0);
+            System.out.println("Player " + gamer.getName() + " wins with " + gamer.getMoney() + " money");
+        }
         return 1;
     }
 
@@ -250,7 +273,7 @@ public class Game {
         int newPosition = gamer.getPosition() + step;
         newPosition %= SQUARE_NUM;
         gamer.setPosition(newPosition);
-        System.out.println("Player " + gamer.getName() + " moves to square No." + (newPosition + 1) + ": " + Square[newPosition]);
+        stdOut.println("Player " + gamer.getName() + " moves to square No." + (newPosition + 1) + ": " + Square[newPosition]);
         Square[gamer.getPosition()].action(gamer);
         if (gamer.isAlive()) {
             gamer.nextTurn();
@@ -394,12 +417,12 @@ public class Game {
     }
 
     private void saveData(int curGamer) {
-        System.out.println("Please enter the file path");
+        stdOut.println("Please enter the file path");
         Scanner sc = new Scanner(System.in);
         String path = sc.next();
         File file = new File(path);
         if (file.exists()) {
-            System.out.println("File already exist!");
+            stdOut.println("File already exist!");
             return;
         }
         boolean createSuc = true;
@@ -407,18 +430,18 @@ public class Game {
             createSuc = file.getParentFile().mkdirs();
         }
         if (!createSuc) {
-            System.out.println("File create failed");
+            stdOut.println("File create failed");
             return;
         }
 
         try {
             createSuc = file.createNewFile();
         } catch (IOException e) {
-            System.out.println("File create failed");
+            stdOut.println("File create failed");
             return;
         }
         if (!createSuc && !file.exists()) {
-            System.out.println("File create failed");
+            stdOut.println("File create failed");
             return;
         }
 
